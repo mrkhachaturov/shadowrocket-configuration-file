@@ -7,17 +7,17 @@
 
 | Конфиг             | Краткое описание                                                                                             |
 |--------------------|-------------------------------------------------------------------------------------------------------------|
-| [sr_ru_basic.conf](https://raw.githubusercontent.com/misha-tgshv/shadowrocket-configuration-file/refs/heads/main/conf/sr_ru_basic.conf)  | Базовый конфиг: весь трафик идет напрямую через оператора, кроме доменов из списка, для которых используется прокси. Включает списки сообщества «Про Shadowrocket на русском» и порты голосового трафика.        |
-| [sr_ru_mini.conf](https://raw.githubusercontent.com/misha-tgshv/shadowrocket-configuration-file/refs/heads/main/conf/sr_ru_mini.conf)   | Минимальный конфиг с ограниченным числом популярных проксированных доменов для быстрой и легкой настройки.    |
-| [sr_ru_extended.conf](https://raw.githubusercontent.com/misha-tgshv/shadowrocket-configuration-file/refs/heads/main/conf/sr_ru_extended.conf) | Расширенный конфиг с возможностью добавлять собственные правила маршрутизации. Можно не скачивать, а создать в приложении.                              |
-| [sr_nonru_basic.conf](https://raw.githubusercontent.com/misha-tgshv/shadowrocket-configuration-file/refs/heads/main/conf/sr_nonru_basic.conf) | Конфиг для тех, кто зарубежом, проксирующий все российские домены и домены на кириллице.
+| [sr_ru_basic.conf](https://raw.githubusercontent.com/mrkhachaturov/shadowrocket-configuration-file/refs/heads/main/conf/sr_ru_basic.conf)  | Базовый конфиг: весь трафик идет напрямую через оператора, кроме доменов из списка, для которых используется прокси. Включает списки сообщества «Про Shadowrocket на русском» и порты голосового трафика.        |
+| [sr_ru_mini.conf](https://raw.githubusercontent.com/mrkhachaturov/shadowrocket-configuration-file/refs/heads/main/conf/sr_ru_mini.conf)   | Минимальный конфиг с ограниченным числом популярных проксированных доменов для быстрой и легкой настройки.    |
+| [sr_ru_extended.conf](https://raw.githubusercontent.com/mrkhachaturov/shadowrocket-configuration-file/refs/heads/main/conf/sr_ru_extended.conf) | Расширенный конфиг с возможностью добавлять собственные правила маршрутизации. Можно не скачивать, а создать в приложении.                              |
+| [sr_nonru_basic.conf](https://raw.githubusercontent.com/mrkhachaturov/shadowrocket-configuration-file/refs/heads/main/conf/sr_nonru_basic.conf) | Конфиг для тех, кто зарубежом, проксирующий все российские домены и домены на кириллице.
 
 ## Особенности конфигов
 - Для популярных доменов (например, Instagram, YouTube) применяется дополнительное подправило `DOMAIN-KEYWORD`;
 - Используются подправила `DOMAIN-SUFFIX` для корректной работы с поддоменами и расширяющие возможности, если появился новый поддомен;
 
 ## Модули
-Для YouTube доступен модуль [YT-Premium-V1-RU.module](https://raw.githubusercontent.com/misha-tgshv/shadowrocket-configuration-file/refs/heads/release/modules/YT-Premium-V1-RU.module) с отключенными китайскими субтитрами и необходимыми правилами. Требует выпуск HTTPS-сертификата на устройства. Хорошо работает на iOS, плохо на macOS и не работает на Apple TV.
+Для YouTube доступен модуль [YT-Premium-V1-RU.module](https://raw.githubusercontent.com/mrkhachaturov/shadowrocket-configuration-file/refs/heads/release/modules/YT-Premium-V1-RU.module) с отключенными китайскими субтитрами и необходимыми правилами. Требует выпуск HTTPS-сертификата на устройства. Хорошо работает на iOS, плохо на macOS и не работает на Apple TV.
 
 ## Актуальные списки
 - `domains_community.list` — домены сообщества «Про Shadowrocket на русском», включающие универсальные правила для популярных доменов;

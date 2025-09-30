@@ -1,8 +1,8 @@
 # NAME: domains_community.list
-# AUTHOR: misha-tgshv
-# REPO: https://github.com/misha-tgshv/shadowrocket-configuration-file
+# AUTHOR: Mr Khachaturov
+# REPO: https://github.com/mrkhachaturov/shadowrocket-configuration-file
 # UPDATED: 2025-09-30 00:44:28 MSK
-# SOURCE: https://github.com/misha-tgshv/shadowrocket-configuration-file/blob/main/community.list
+# SOURCE: https://github.com/mrkhachaturov/shadowrocket-configuration-file/blob/main/community.list
 # special
 DOMAIN-KEYWORD,4pda
 DOMAIN-KEYWORD,discord
