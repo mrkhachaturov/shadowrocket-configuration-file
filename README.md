@@ -35,7 +35,3 @@
 - `inside-raw.lst` — домены от [@itdog](https://github.com/itdoginfo/allow-domains/blob/main/Russia/inside-clashx.lst);
 - `domain_youtube.list` — домены для Ютуба из [@blackmatrix7](https://github.com/dsvip/Quantumult-X);
 - `domain_discord.list` — домены для Дискорда из [@blackmatrix7](https://github.com/blackmatrix7/ios_rule_script).
-
-## Инструкции и помощь
-Подробные инструкции по настройке, использованию и дополнительным функциям доступны в [блоге](https://mishatugushev.ru/blog/?go=all/shadowrocket-seamless).
-Поддержать проект можно переводом средств на ЮMoney: [410015839777064](https://yoomoney.ru/to/410015839777064).
