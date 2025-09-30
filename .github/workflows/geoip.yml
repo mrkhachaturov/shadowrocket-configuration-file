@@ -1,0 +1,94 @@
+name: Update GeoLite2 MMDB
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 3 * * 1"
+
+permissions:
+  contents: write
+
+jobs:
+  fetch_geolite2:
+    runs-on: ubuntu-latest
+    steps:
+      - id: app-token
+        name: Create GitHub App token
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ vars.APP_ID }}
+          private-key: ${{ secrets.PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          token: ${{ steps.app-token.outputs.token }}
+          persist-credentials: false
+
+      - name: Download and extract GeoLite2 Country and ASN
+        env:
+          MAXMIND_ACCOUNT_ID: ${{ secrets.MAXMIND_ACCOUNT_ID }}
+          MAXMIND_LICENSE_KEY: ${{ secrets.MAXMIND_LICENSE_KEY }}
+        run: |
+          set -euo pipefail
+          mkdir -p geoip
+
+          tmpdir=$(mktemp -d)
+          trap 'rm -rf "${tmpdir}"' EXIT
+
+          echo "Downloading GeoLite2-Country via permalink with Basic Auth (follows redirects to Cloudflare R2)..."
+          curl -fSLo "${tmpdir}/country.tar.gz" \
+            --location \
+            --retry 5 \
+            --retry-all-errors \
+            --connect-timeout 15 \
+            --max-time 300 \
+            -u "${MAXMIND_ACCOUNT_ID}:${MAXMIND_LICENSE_KEY}" \
+            'https://download.maxmind.com/geoip/databases/GeoLite2-Country/download?suffix=tar.gz'
+          echo "Downloading GeoLite2-ASN via permalink with Basic Auth (follows redirects to Cloudflare R2)..."
+          curl -fSLo "${tmpdir}/asn.tar.gz" \
+            --location \
+            --retry 5 \
+            --retry-all-errors \
+            --connect-timeout 15 \
+            --max-time 300 \
+            -u "${MAXMIND_ACCOUNT_ID}:${MAXMIND_LICENSE_KEY}" \
+            'https://download.maxmind.com/geoip/databases/GeoLite2-ASN/download?suffix=tar.gz'
+
+          echo "Extracting MMDB files..."
+          tar -xzf "${tmpdir}/country.tar.gz" -C "${tmpdir}"
+          tar -xzf "${tmpdir}/asn.tar.gz" -C "${tmpdir}"
+
+          country_mmdb=$(find "${tmpdir}" -type f -name "GeoLite2-Country.mmdb" | head -n 1)
+          asn_mmdb=$(find "${tmpdir}" -type f -name "GeoLite2-ASN.mmdb" | head -n 1)
+
+          if [ -z "${country_mmdb}" ] || [ -z "${asn_mmdb}" ]; then
+            echo "MMDB files not found after extraction" >&2
+            exit 1
+          fi
+
+          mv -f "${country_mmdb}" geoip/GeoLite2-Country.mmdb
+          mv -f "${asn_mmdb}" geoip/GeoLite2-ASN.mmdb
+
+          ls -lh geoip
+
+      - name: Configure git identity
+        run: |
+          git config --local user.name "github-app[bot]"
+          git config --local user.email "github-app[bot]@users.noreply.github.com"
+
+      - name: Commit MMDB updates
+        run: |
+          git add geoip/GeoLite2-Country.mmdb geoip/GeoLite2-ASN.mmdb
+          git commit -m "GeoIP: update GeoLite2 Country/ASN MMDB [skip ci]" || echo "No changes to commit"
+
+      - name: Push to main with App token
+        env:
+          APP_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: |
+          git remote set-url origin https://x-access-token:${APP_TOKEN}@github.com/${{ github.repository }}.git
+          git push origin HEAD:main
+
+
