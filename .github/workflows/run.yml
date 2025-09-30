@@ -158,6 +158,21 @@ jobs:
           sed 's/\/.*//' | \
           sort -u | sed 's/^/DOMAIN-SUFFIX,/' > rules/domains_banking.list
 
+      - name: Генерируем domains_games.list из ipranges/downloader.sh
+        run: |
+          echo "# NAME: domains_games.list" > rules/domains_games.list
+          echo "# AUTHOR: Mr Khachaturov" >> rules/domains_games.list
+          echo "# REPO: https://github.com/mrkhachaturov/shadowrocket-configuration-file" >> rules/domains_games.list
+          echo "# SOURCE: https://github.com/mrkhachaturov/ipranges/blob/main/games/downloader.sh" >> rules/domains_games.list
+          echo "# UPDATED: $(TZ='Europe/Moscow' date '+%Y-%m-%d %H:%M:%S') MSK" >> rules/domains_games.list
+          curl -sSL "https://raw.githubusercontent.com/mrkhachaturov/ipranges/refs/heads/main/games/downloader.sh" \
+            | awk '/^DOMAINS=\(/ {in_array=1; next} in_array && /^\)/ {in_array=0} in_array' \
+            | sed -E 's/#.*$//' \
+            | tr -d '\r"' \
+            | sed -E 's/^[[:space:]]+|[[:space:]]+$//g' \
+            | awk 'NF {print "DOMAIN-SUFFIX," $1}' \
+            | sort -u >> rules/domains_games.list
+
       # --- Генерация скриптов ---
       - name: Генерируем rewrite.youtube.response.preview.js
         run: |
@@ -192,6 +207,7 @@ jobs:
             echo "# Выборочные правила маршрутизации"
             echo "[Rule]"
             echo "RULE-SET,https://raw.githubusercontent.com/mrkhachaturov/shadowrocket-configuration-file/main/rules/domains_community.list,PROXY"
+            echo "RULE-SET,https://raw.githubusercontent.com/mrkhachaturov/shadowrocket-configuration-file/main/rules/domains_games.list,PROXY"
             echo "RULE-SET,https://raw.githubusercontent.com/mrkhachaturov/shadowrocket-configuration-file/refs/heads/main/rules/domain_ips.list,PROXY,no-resolve"
             echo "RULE-SET,https://raw.githubusercontent.com/mrkhachaturov/shadowrocket-configuration-file/main/rules/voice_ports.list,PROXY"
             echo "# RULE-SET,https://raw.githubusercontent.com/HybridNetworks/whatsapp-cidr/refs/heads/main/WhatsApp/whatsapp_cidr_ipv4.list,PROXY,no-resolve"

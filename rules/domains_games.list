@@ -1,0 +1,14 @@
+# NAME: domains_games.list
+# AUTHOR: Mr Khachaturov
+# REPO: https://github.com/mrkhachaturov/shadowrocket-configuration-file
+# SOURCE: https://github.com/mrkhachaturov/ipranges/blob/main/games/downloader.sh
+# UPDATED: 2025-01-27 10:56:18 MSK
+DOMAIN-SUFFIX,brawlstars.com
+DOMAIN-SUFFIX,clashofclans.inbox.supercell.com
+DOMAIN-SUFFIX,game-assets.clashofclans.com
+DOMAIN-SUFFIX,game.brawlstarsgame.com
+DOMAIN-SUFFIX,game.clashroyaleapp.com
+DOMAIN-SUFFIX,gamea.clashofclans.com
+DOMAIN-SUFFIX,ingest.sentry.io
+DOMAIN-SUFFIX,supercell.com
+DOMAIN-SUFFIX,wbgames.com

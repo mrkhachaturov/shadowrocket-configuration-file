@@ -35,3 +35,6 @@
 - `inside-raw.lst` — домены от [@itdog](https://github.com/itdoginfo/allow-domains/blob/main/Russia/inside-clashx.lst);
 - `domain_youtube.list` — домены для Ютуба из [@blackmatrix7](https://github.com/dsvip/Quantumult-X);
 - `domain_discord.list` — домены для Дискорда из [@blackmatrix7](https://github.com/blackmatrix7/ios_rule_script).
+
+## Игры
+- `domains_games.list` — домены игровых сервисов, собранные из скрипта `ipranges` ([source](https://github.com/mrkhachaturov/ipranges/blob/main/games/downloader.sh)).
