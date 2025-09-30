@@ -38,24 +38,50 @@ jobs:
           tmpdir=$(mktemp -d)
           trap 'rm -rf "${tmpdir}"' EXIT
 
-          echo "Downloading GeoLite2-Country via permalink with Basic Auth (follows redirects to Cloudflare R2)..."
-          curl -fSLo "${tmpdir}/country.tar.gz" \
-            --location \
-            --retry 5 \
-            --retry-all-errors \
-            --connect-timeout 15 \
-            --max-time 300 \
-            -u "${MAXMIND_ACCOUNT_ID}:${MAXMIND_LICENSE_KEY}" \
-            'https://download.maxmind.com/geoip/databases/GeoLite2-Country/download?suffix=tar.gz'
-          echo "Downloading GeoLite2-ASN via permalink with Basic Auth (follows redirects to Cloudflare R2)..."
-          curl -fSLo "${tmpdir}/asn.tar.gz" \
-            --location \
-            --retry 5 \
-            --retry-all-errors \
-            --connect-timeout 15 \
-            --max-time 300 \
-            -u "${MAXMIND_ACCOUNT_ID}:${MAXMIND_LICENSE_KEY}" \
-            'https://download.maxmind.com/geoip/databases/GeoLite2-ASN/download?suffix=tar.gz'
+          # Helper to attempt download with Basic Auth then fallback to license_key param
+          dl_mmdb() {
+            local edition="$1" # GeoLite2-Country or GeoLite2-ASN
+            local outtgz="$2"
+
+            echo "Preflight HEAD ${edition} (Basic Auth)..."
+            if ! curl -fsSIL \
+              --location \
+              -u "${MAXMIND_ACCOUNT_ID}:${MAXMIND_LICENSE_KEY}" \
+              "https://download.maxmind.com/geoip/databases/${edition}/download?suffix=tar.gz"; then
+              echo "WARN: HEAD preflight failed for ${edition}. Continuing to download attempts..." >&2
+            fi
+
+            echo "Downloading ${edition} (Basic Auth, follows redirects)..."
+            if curl -fSLo "${outtgz}" \
+              --location \
+              --retry 3 \
+              --retry-all-errors \
+              --connect-timeout 15 \
+              --max-time 300 \
+              -u "${MAXMIND_ACCOUNT_ID}:${MAXMIND_LICENSE_KEY}" \
+              "https://download.maxmind.com/geoip/databases/${edition}/download?suffix=tar.gz"; then
+              return 0
+            fi
+
+            echo "Basic Auth download failed for ${edition}. Trying fallback license_key param endpoint..." >&2
+            local edition_id
+            case "${edition}" in
+              GeoLite2-Country) edition_id="GeoLite2-Country";;
+              GeoLite2-ASN) edition_id="GeoLite2-ASN";;
+              *) echo "Unknown edition ${edition}" >&2; return 1;;
+            esac
+
+            curl -fSLo "${outtgz}" \
+              --location \
+              --retry 3 \
+              --retry-all-errors \
+              --connect-timeout 15 \
+              --max-time 300 \
+              "https://download.maxmind.com/app/geoip_download?edition_id=${edition_id}&license_key=${MAXMIND_LICENSE_KEY}&suffix=tar.gz"
+          }
+
+          dl_mmdb "GeoLite2-Country" "${tmpdir}/country.tar.gz"
+          dl_mmdb "GeoLite2-ASN" "${tmpdir}/asn.tar.gz"
 
           echo "Extracting MMDB files..."
           tar -xzf "${tmpdir}/country.tar.gz" -C "${tmpdir}"
