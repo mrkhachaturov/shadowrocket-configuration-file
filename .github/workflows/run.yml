@@ -173,6 +173,19 @@ jobs:
             | awk 'NF {print "DOMAIN-SUFFIX," $1}' \
             | sort -u >> rules/domains_games.list
 
+      - name: Генерируем ips_games.list из ipranges/games/ipv4.txt
+        run: |
+          echo "# NAME: ips_games.list" > rules/ips_games.list
+          echo "# AUTHOR: Mr Khachaturov" >> rules/ips_games.list
+          echo "# REPO: https://github.com/mrkhachaturov/shadowrocket-configuration-file" >> rules/ips_games.list
+          echo "# SOURCE: https://github.com/mrkhachaturov/ipranges/blob/main/games/ipv4.txt" >> rules/ips_games.list
+          echo "# UPDATED: $(TZ='Europe/Moscow' date '+%Y-%m-%d %H:%M:%S') MSK" >> rules/ips_games.list
+          curl -sSL "https://raw.githubusercontent.com/mrkhachaturov/ipranges/refs/heads/main/games/ipv4.txt" \
+            | tr ' ' '\n' \
+            | grep -E '^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+/[0-9]+$' \
+            | sed 's/^/IP-CIDR,/' \
+            | sort -u >> rules/ips_games.list
+
       # --- Генерация скриптов ---
       - name: Генерируем rewrite.youtube.response.preview.js
         run: |
@@ -208,6 +221,7 @@ jobs:
             echo "[Rule]"
             echo "RULE-SET,https://raw.githubusercontent.com/mrkhachaturov/shadowrocket-configuration-file/main/rules/domains_community.list,PROXY"
             echo "RULE-SET,https://raw.githubusercontent.com/mrkhachaturov/shadowrocket-configuration-file/main/rules/domains_games.list,PROXY"
+            echo "RULE-SET,https://raw.githubusercontent.com/mrkhachaturov/shadowrocket-configuration-file/main/rules/ips_games.list,PROXY,no-resolve"
             echo "RULE-SET,https://raw.githubusercontent.com/mrkhachaturov/shadowrocket-configuration-file/refs/heads/main/rules/domain_ips.list,PROXY,no-resolve"
             echo "RULE-SET,https://raw.githubusercontent.com/mrkhachaturov/shadowrocket-configuration-file/main/rules/voice_ports.list,PROXY"
             echo "# RULE-SET,https://raw.githubusercontent.com/HybridNetworks/whatsapp-cidr/refs/heads/main/WhatsApp/whatsapp_cidr_ipv4.list,PROXY,no-resolve"
