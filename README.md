@@ -10,6 +10,7 @@
 | [sr_ru_basic.conf](https://raw.githubusercontent.com/mrkhachaturov/shadowrocket-configuration-file/refs/heads/main/conf/sr_ru_basic.conf)  | Базовый конфиг: весь трафик идет напрямую через оператора, кроме доменов из списка, для которых используется прокси. Включает списки сообщества «Про Shadowrocket на русском» и порты голосового трафика.        |
 | [sr_ru_mini.conf](https://raw.githubusercontent.com/mrkhachaturov/shadowrocket-configuration-file/refs/heads/main/conf/sr_ru_mini.conf)   | Минимальный конфиг с ограниченным числом популярных проксированных доменов для быстрой и легкой настройки.    |
 | [sr_ru_extended.conf](https://raw.githubusercontent.com/mrkhachaturov/shadowrocket-configuration-file/refs/heads/main/conf/sr_ru_extended.conf) | Расширенный конфиг с возможностью добавлять собственные правила маршрутизации. Можно не скачивать, а создать в приложении.                              |
+| [sr_ru_advanced.conf](https://raw.githubusercontent.com/mrkhachaturov/shadowrocket-configuration-file/refs/heads/main/conf/sr_ru_advanced.conf) | Продвинутый конфиг, включающий sr_ru_extended.conf с дополнительными правилами для Atlassian сервисов (Jira, Confluence, Bitbucket). |
 | [sr_nonru_basic.conf](https://raw.githubusercontent.com/mrkhachaturov/shadowrocket-configuration-file/refs/heads/main/conf/sr_nonru_basic.conf) | Конфиг для тех, кто зарубежом, проксирующий все российские домены и домены на кириллице.
 
 ## Особенности конфигов
@@ -38,3 +39,6 @@
 
 ## Игры
 - `domains_games.list` — домены игровых сервисов, собранные из скрипта `ipranges` ([source](https://github.com/mrkhachaturov/ipranges/blob/main/games/downloader.sh)).
+
+## IP-адреса Atlassian
+- `ips_atlassian.list` — IP-адреса сервисов Atlassian (Jira, Confluence, Bitbucket), собранные из [ipranges/atlassian/ipv4.txt](https://github.com/mrkhachaturov/ipranges/blob/main/atlassian/ipv4.txt).

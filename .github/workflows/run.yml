@@ -186,6 +186,19 @@ jobs:
             | sed 's/^/IP-CIDR,/' \
             | sort -u >> rules/ips_games.list
 
+      - name: Генерируем ips_atlassian.list из ipranges/atlassian/ipv4.txt
+        run: |
+          echo "# NAME: ips_atlassian.list" > rules/ips_atlassian.list
+          echo "# AUTHOR: Mr Khachaturov" >> rules/ips_atlassian.list
+          echo "# REPO: https://github.com/mrkhachaturov/shadowrocket-configuration-file" >> rules/ips_atlassian.list
+          echo "# SOURCE: https://github.com/mrkhachaturov/ipranges/blob/main/atlassian/ipv4.txt" >> rules/ips_atlassian.list
+          echo "# UPDATED: $(TZ='Europe/Moscow' date '+%Y-%m-%d %H:%M:%S') MSK" >> rules/ips_atlassian.list
+          curl -sSL "https://raw.githubusercontent.com/mrkhachaturov/ipranges/refs/heads/main/atlassian/ipv4.txt" \
+            | tr ' ' '\n' \
+            | grep -E '^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+/[0-9]+$' \
+            | sed 's/^/IP-CIDR,/' \
+            | sort -u >> rules/ips_atlassian.list
+
       # --- Генерация скриптов ---
       - name: Генерируем rewrite.youtube.response.preview.js
         run: |
@@ -305,6 +318,7 @@ jobs:
             cat conf/General.tmp
             echo "# Собственные правила маршрутизации"
             echo "[Rule]"
+            echo "RULE-SET,https://raw.githubusercontent.com/mrkhachaturov/shadowrocket-configuration-file/main/rules/ips_atlassian.list,PROXY,no-resolve"
             echo ""
             echo ""
             echo ""
@@ -312,6 +326,30 @@ jobs:
       
           sed -i "1s/^/# @mrkhachaturov, built on $(TZ=\"Asia/Novokuznetsk\" date)\n/" conf/${CONFNAME}
       
+          rm conf/General.tmp
+
+      - name: Создаем sr_ru_advanced.conf с include sr_ru_extended.conf
+        run: |
+          CONFNAME="sr_ru_advanced.conf"
+          cp source/General.txt conf/General.tmp
+          sed -i "s|^update-url =.*|update-url = https://cdn.jsdelivr.net/gh/mrkhachaturov/shadowrocket-configuration-file@main/conf/${CONFNAME}|" conf/General.tmp
+          sed -i "s|^# include = sr_ru_extended.conf|include = sr_ru_extended.conf|" conf/General.tmp
+
+          {
+            cat conf/General.tmp
+            echo "# Выборочные правила маршрутизации"
+            echo "[Rule]"
+            echo "RULE-SET,https://raw.githubusercontent.com/mrkhachaturov/shadowrocket-configuration-file/main/rules/domains_community.list,PROXY"
+            echo "RULE-SET,https://raw.githubusercontent.com/mrkhachaturov/shadowrocket-configuration-file/main/rules/domains_games.list,PROXY"
+            echo "RULE-SET,https://raw.githubusercontent.com/mrkhachaturov/shadowrocket-configuration-file/main/rules/ips_games.list,PROXY,no-resolve"
+            echo "RULE-SET,https://raw.githubusercontent.com/mrkhachaturov/shadowrocket-configuration-file/refs/heads/main/rules/domain_ips.list,PROXY,no-resolve"
+            echo "RULE-SET,https://raw.githubusercontent.com/mrkhachaturov/shadowrocket-configuration-file/main/rules/voice_ports.list,PROXY"
+            echo "# RULE-SET,https://raw.githubusercontent.com/HybridNetworks/whatsapp-cidr/refs/heads/main/WhatsApp/whatsapp_cidr_ipv4.list,PROXY,no-resolve"
+            echo "# RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Shadowrocket/Telegram/Telegram.list,PROXY"
+            echo "FINAL,DIRECT"
+          } > conf/${CONFNAME}
+
+          sed -i "1s/^/# @mrkhachaturov, built on $(TZ=\"Europe/Moscow\" date)\n/" conf/${CONFNAME}
           rm conf/General.tmp
 
       # --- Коммитим и пушим ---
