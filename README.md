@@ -42,3 +42,6 @@
 
 ## IP-адреса Atlassian
 - `ips_atlassian.list` — IP-адреса сервисов Atlassian (Jira, Confluence, Bitbucket), собранные из [ipranges/atlassian/ipv4.txt](https://github.com/mrkhachaturov/ipranges/blob/main/atlassian/ipv4.txt).
+
+## IP-адреса CloudFront
+- `ips_cloudfront.list` — IP-адреса AWS CloudFront CDN, собранные из [ipranges/cloudfront/ipv4.txt](https://github.com/mrkhachaturov/ipranges/blob/main/cloudfront/ipv4.txt).

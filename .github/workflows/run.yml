@@ -199,6 +199,19 @@ jobs:
             | sed 's/^/IP-CIDR,/' \
             | sort -u >> rules/ips_atlassian.list
 
+      - name: Генерируем ips_cloudfront.list из ipranges/cloudfront/ipv4.txt
+        run: |
+          echo "# NAME: ips_cloudfront.list" > rules/ips_cloudfront.list
+          echo "# AUTHOR: Mr Khachaturov" >> rules/ips_cloudfront.list
+          echo "# REPO: https://github.com/mrkhachaturov/shadowrocket-configuration-file" >> rules/ips_cloudfront.list
+          echo "# SOURCE: https://github.com/mrkhachaturov/ipranges/blob/main/cloudfront/ipv4.txt" >> rules/ips_cloudfront.list
+          echo "# UPDATED: $(TZ='Europe/Moscow' date '+%Y-%m-%d %H:%M:%S') MSK" >> rules/ips_cloudfront.list
+          curl -sSL "https://raw.githubusercontent.com/mrkhachaturov/ipranges/refs/heads/main/cloudfront/ipv4.txt" \
+            | tr ' ' '\n' \
+            | grep -E '^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+/[0-9]+$' \
+            | sed 's/^/IP-CIDR,/' \
+            | sort -u >> rules/ips_cloudfront.list
+
       # --- Генерация скриптов ---
       - name: Генерируем rewrite.youtube.response.preview.js
         run: |
@@ -319,6 +332,7 @@ jobs:
             echo "# Собственные правила маршрутизации"
             echo "[Rule]"
             echo "RULE-SET,https://raw.githubusercontent.com/mrkhachaturov/shadowrocket-configuration-file/main/rules/ips_atlassian.list,PROXY,no-resolve"
+            echo "RULE-SET,https://raw.githubusercontent.com/mrkhachaturov/shadowrocket-configuration-file/main/rules/ips_cloudfront.list,PROXY,no-resolve"
             echo ""
             echo ""
             echo ""
