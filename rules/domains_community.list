@@ -1,7 +1,7 @@
 # NAME: domains_community.list
 # AUTHOR: Mr Khachaturov
 # REPO: https://github.com/mrkhachaturov/shadowrocket-configuration-file
-# UPDATED: 2025-10-15 00:28:51 MSK
+# UPDATED: 2025-10-16 00:28:50 MSK
 # SOURCE: https://github.com/mrkhachaturov/shadowrocket-configuration-file/blob/main/community.list
 # special
 DOMAIN-KEYWORD,4pda
