@@ -2,7 +2,7 @@
 # AUTHOR: Mr Khachaturov
 # REPO: https://github.com/mrkhachaturov/shadowrocket-configuration-file
 # SOURCE: https://github.com/mrkhachaturov/ipranges/blob/main/atlassian/ipv4.txt
-# UPDATED: 2026-05-20 04:03:33 MSK
+# UPDATED: 2026-05-21 04:03:37 MSK
 IP-CIDR,104.192.136.0/21
 IP-CIDR,104.192.136.0/24
 IP-CIDR,104.192.136.224/28
@@ -11,7 +11,6 @@ IP-CIDR,104.192.137.0/24
 IP-CIDR,104.192.137.224/28
 IP-CIDR,104.192.137.240/28
 IP-CIDR,104.192.138.0/24
-IP-CIDR,104.192.138.224/28
 IP-CIDR,104.192.139.0/24
 IP-CIDR,104.192.140.0/24
 IP-CIDR,104.192.140.240/28
