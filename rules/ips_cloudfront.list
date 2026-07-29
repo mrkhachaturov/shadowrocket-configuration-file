@@ -2,7 +2,7 @@
 # AUTHOR: Mr Khachaturov
 # REPO: https://github.com/mrkhachaturov/shadowrocket-configuration-file
 # SOURCE: https://github.com/mrkhachaturov/ipranges/blob/main/cloudfront/ipv4.txt
-# UPDATED: 2026-07-28 05:48:06 MSK
+# UPDATED: 2026-07-29 05:55:26 MSK
 IP-CIDR,108.138.0.0/15
 IP-CIDR,108.156.0.0/14
 IP-CIDR,111.13.171.128/26
@@ -95,6 +95,8 @@ IP-CIDR,23.228.221.0/24
 IP-CIDR,23.228.222.0/24
 IP-CIDR,23.228.223.0/24
 IP-CIDR,23.228.244.0/24
+IP-CIDR,23.228.246.0/24
+IP-CIDR,23.228.247.0/24
 IP-CIDR,23.228.248.0/24
 IP-CIDR,23.228.249.0/24
 IP-CIDR,23.228.250.0/24
