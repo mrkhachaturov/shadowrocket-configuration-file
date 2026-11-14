@@ -2,7 +2,7 @@
 # AUTHOR: Mr Khachaturov
 # REPO: https://github.com/mrkhachaturov/shadowrocket-configuration-file
 # SOURCE: https://github.com/mrkhachaturov/ipranges/blob/main/games/downloader.sh
-# UPDATED: 2026-11-13 08:48:52 MSK
+# UPDATED: 2026-11-14 08:39:13 MSK
 DOMAIN-SUFFIX,brawlstars.com
 DOMAIN-SUFFIX,clashofclans.inbox.supercell.com
 DOMAIN-SUFFIX,game-assets.clashofclans.com
